@@ -29,6 +29,26 @@ output "public_route_table_id" {
 }
 
 output "main_route_table_id" {
-  description = "Table principale encore utilisee implicitement par le sous-reseau prive."
+  description = "Table principale du VPC, sans association aux deux sous-reseaux du TP."
   value       = module.vpc.main_route_table_id
+}
+
+output "nat_gateway_id" {
+  description = "Identifiant de la passerelle NAT publique."
+  value       = module.vpc.nat_gateway_id
+}
+
+output "nat_eip_allocation_id" {
+  description = "Identifiant allocation de l adresse IP elastique de la NAT."
+  value       = module.vpc.nat_eip_allocation_id
+}
+
+output "nat_public_ip" {
+  description = "Adresse IPv4 publique de sortie via la NAT."
+  value       = module.vpc.nat_public_ip
+}
+
+output "private_route_table_id" {
+  description = "Table de routage associee au sous-reseau prive."
+  value       = module.vpc.private_route_table_id
 }
