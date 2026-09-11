@@ -1,0 +1,13 @@
+# Fichiers locaux et état Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+*.tfplan
+crash.log
+crash.*.log
+*.pem
+*.key
+reponses-[0-9][0-9].txt
+# Versionner .gitignore et .terraform.lock.hcl !
