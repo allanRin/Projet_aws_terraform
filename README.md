@@ -1,137 +1,95 @@
-## EXO 1 VPC
+# Infrastructure AWS avec Terraform
+
+Déploiement d’un VPC avec sous-réseaux public et privé, passerelle internet, NAT, bastion SSH et instance privée dans la région `eu-west-3`.
+
+## Structure
+
+- `modules/vpc` : réseau et routage.
+- `modules/security` : groupes de sécurité et règles SSH.
+- `modules/ec2` : instances Amazon Linux et paire de clés publique.
+- Fichiers Terraform à la racine : configuration et intégration des modules.
+
+## Prérequis
+
+Terraform >= 1.5 et < 2, AWS CLI authentifiée avec les droits nécessaires, Git et OpenSSH. Vérifier l’accès AWS avec `aws sts get-caller-identity`.
+
+## Lancement
+
+Depuis la racine du dépôt cloné :
 
 ```bash
-dev@DESKTOP-P6CCGSP:~/Projet_aws_terraform$ terraform init
-Initializing the backend...
-
-Initializing modules...
-- vpc in modules/vpc
-
-Initializing provider plugins...
-- Finding hashicorp/aws versions matching ">= 6.0.0, ~> 6.0, < 7.0.0"...
-- Installing hashicorp/aws v6.64.0...
-- Installed hashicorp/aws v6.64.0 (signed by HashiCorp)
-
-Terraform has created a lock file .terraform.lock.hcl to record the provider
-selections it made above. Include this file in your version control repository
-so that Terraform can guarantee to make the same selections by default when
-you run "terraform init" in the future.
-
-Terraform has been successfully initialized!
-
-You may now begin working with Terraform. Try running "terraform plan" to see
-any changes that are required for your infrastructure. All Terraform commands
-should now work.
-
-If you ever set or change modules or backend configuration for Terraform,
-rerun this command to reinitialize your working directory. If you forget, other
-commands will detect it and remind you to do so if necessary.
-dev@DESKTOP-P6CCGSP:~/Projet_aws_terraform$ 
+cp terraform.tfvars.example terraform.tfvars
 ```
+
+Créer une clé sur le poste qui servira aux connexions SSH (ne pas écraser une clé existante) :
 
 ```bash
-dev@DESKTOP-P6CCGSP:~/Projet_aws_terraform$ terraform plan -out=exercice1.tfplan
-
-Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
-  + create
-
-Terraform will perform the following actions:
-
-  # module.vpc.aws_subnet.private will be created
-  + resource "aws_subnet" "private" {
-      + arn                                            = (known after apply)
-      + assign_ipv6_address_on_creation                = false
-      + availability_zone                              = "eu-west-3a"
-      + availability_zone_id                           = (known after apply)
-      + cidr_block                                     = "10.0.11.0/24"
-      + enable_dns64                                   = false
-      + enable_resource_name_dns_a_record_on_launch    = false
-      + enable_resource_name_dns_aaaa_record_on_launch = false
-      + id                                             = (known after apply)
-      + ipv6_cidr_block                                = (known after apply)
-      + ipv6_cidr_block_association_id                 = (known after apply)
-      + ipv6_native                                    = false
-      + map_public_ip_on_launch                        = false
-      + owner_id                                       = (known after apply)
-      + private_dns_hostname_type_on_launch            = (known after apply)
-      + region                                         = "eu-west-3"
-      + tags                                           = {
-          + "Name" = "tp-06-prive-a"
-        }
-      + tags_all                                       = {
-          + "Name" = "tp-06-prive-a"
-        }
-      + vpc_id                                         = (known after apply)
-    }
-
-  # module.vpc.aws_subnet.public will be created
-  + resource "aws_subnet" "public" {
-      + arn                                            = (known after apply)
-      + assign_ipv6_address_on_creation                = false
-      + availability_zone                              = "eu-west-3a"
-      + availability_zone_id                           = (known after apply)
-      + cidr_block                                     = "10.0.1.0/24"
-      + enable_dns64                                   = false
-      + enable_resource_name_dns_a_record_on_launch    = false
-      + enable_resource_name_dns_aaaa_record_on_launch = false
-      + id                                             = (known after apply)
-      + ipv6_cidr_block                                = (known after apply)
-      + ipv6_cidr_block_association_id                 = (known after apply)
-      + ipv6_native                                    = false
-      + map_public_ip_on_launch                        = true
-      + owner_id                                       = (known after apply)
-      + private_dns_hostname_type_on_launch            = (known after apply)
-      + region                                         = "eu-west-3"
-      + tags                                           = {
-          + "Name" = "tp-06-public-a"
-        }
-      + tags_all                                       = {
-          + "Name" = "tp-06-public-a"
-        }
-      + vpc_id                                         = (known after apply)
-    }
-
-  # module.vpc.aws_vpc.this will be created
-  + resource "aws_vpc" "this" {
-      + arn                                  = (known after apply)
-      + cidr_block                           = "10.0.0.0/16"
-      + default_network_acl_id               = (known after apply)
-      + default_route_table_id               = (known after apply)
-      + default_security_group_id            = (known after apply)
-      + dhcp_options_id                      = (known after apply)
-      + enable_dns_hostnames                 = true
-      + enable_dns_support                   = true
-      + enable_network_address_usage_metrics = (known after apply)
-      + id                                   = (known after apply)
-      + instance_tenancy                     = "default"
-      + ipv6_association_id                  = (known after apply)
-      + ipv6_cidr_block                      = (known after apply)
-      + ipv6_cidr_block_network_border_group = (known after apply)
-      + main_route_table_id                  = (known after apply)
-      + owner_id                             = (known after apply)
-      + region                               = "eu-west-3"
-      + tags                                 = {
-          + "Name" = "tp-06-vpc"
-        }
-      + tags_all                             = {
-          + "Name" = "tp-06-vpc"
-        }
-    }
-
-Plan: 3 to add, 0 to change, 0 to destroy.
-
-Changes to Outputs:
-  + numero_poste      = "06"
-  + private_subnet_id = (known after apply)
-  + public_subnet_id  = (known after apply)
-  + vpc_id            = (known after apply)
-
-──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-
-Saved the plan to: exercice1.tfplan
-
-To perform exactly these actions, run the following command to apply:
-    terraform apply "exercice1.tfplan"
-dev@DESKTOP-P6CCGSP:~/Projet_aws_terraform$
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+ssh-keygen -t ed25519 -f ~/.ssh/aws-lab.pem
+chmod 400 ~/.ssh/aws-lab.pem
 ```
 
+Si Terraform tourne sur une autre machine, y transférer uniquement le fichier `.pub`.
+
+Obtenir l’AMI Amazon Linux 2023 x86_64 de la région :
+
+```bash
+aws ssm get-parameter --region eu-west-3 \
+  --name /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64 \
+  --query 'Parameter.Value' --output text
+```
+
+Compléter `terraform.tfvars` :
+
+| Variable | Valeur attendue |
+|---|---|
+| `numero_poste` | Identifiant sur deux chiffres, entre guillemets |
+| `ssh_source_cidr` | IPv4 publique du poste SSH suivie de `/32` |
+| `ami_id` | Identifiant retourné par la commande précédente |
+| `ssh_public_key_path` | Chemin du fichier `.pub` sur la machine Terraform |
+
+Puis exécuter :
+
+```bash
+terraform init
+terraform fmt -check -recursive
+terraform validate
+terraform plan -out=deployment.tfplan
+terraform apply deployment.tfplan
+terraform output
+```
+
+Examiner le plan avant application. Un premier déploiement complet prévoit 21 ressources Terraform.
+
+## Connexion
+
+Sur le poste qui possède la clé privée, remplacer les adresses par les outputs `bastion_public_ip` et `private_instance_ip` :
+
+```bash
+ssh -i ~/.ssh/aws-lab.pem ec2-user@<IP_BASTION>
+
+ssh -i ~/.ssh/aws-lab.pem \
+  -o 'ProxyCommand=ssh -i ~/.ssh/aws-lab.pem -W %h:%p ec2-user@<IP_BASTION>' \
+  ec2-user@<IP_PRIVEE>
+```
+
+La clé privée reste sur le poste ; elle ne doit pas être copiée sur le bastion.
+
+## Nettoyage
+
+Depuis la même machine et avec le même état Terraform :
+
+```bash
+terraform plan -destroy -out=cleanup.tfplan
+terraform apply cleanup.tfplan
+terraform state list
+```
+
+La NAT, les IPv4 publiques et les instances engendrent des frais. Supprimer les ressources après utilisation.
+
+## Gestion du dépôt
+
+Les modules sont développés sur `feature/module-vpc`, `feature/module-security` et `feature/module-ec2`, puis fusionnés avec `--no-ff` pour conserver leur historique.
+
+Versionner `.terraform.lock.hcl`. Ne pas publier les identifiants AWS, clés privées, fichiers `.tfvars`, plans ou états Terraform. Conserver l’état local jusqu’à la suppression complète des ressources.
