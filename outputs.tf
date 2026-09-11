@@ -62,3 +62,28 @@ output "private_security_group_id" {
   description = "Groupe de securite a associer a l instance privee."
   value       = module.security.private_security_group_id
 }
+
+output "bastion_instance_id" {
+  description = "bastion instance id."
+  value       = module.ec2.bastion_instance_id
+}
+
+output "bastion_public_ip" {
+  description = "bastion public ip."
+  value       = module.ec2.bastion_public_ip
+}
+
+output "bastion_private_ip" {
+  description = "bastion private ip."
+  value       = module.ec2.bastion_private_ip
+}
+
+output "bastion_private_dns" {
+  description = "bastion private dns."
+  value       = module.ec2.bastion_private_dns
+}
+
+output "key_pair_name" {
+  description = "key pair name."
+  value       = module.ec2.key_pair_name
+}

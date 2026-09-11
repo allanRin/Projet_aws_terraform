@@ -3,3 +3,8 @@ numero_poste = "NN"
 
 # Remplacer par l IPv4 publique du poste qui ouvrira SSH, suivie de /32.
 ssh_source_cidr = "VOTRE_IP_PUBLIQUE/32"
+
+# Relever l AMI officielle Amazon Linux 2023 x86_64 dans eu-west-3.
+ami_id = "AMI_A_RENSEIGNER"
+# Uniquement la cle publique ; la cle privee reste sur le poste SSH.
+ssh_public_key_path = "~/.ssh/tp-06-cle.pem.pub"
