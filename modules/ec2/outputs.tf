@@ -23,3 +23,17 @@ output "key_pair_name" {
   value       = aws_key_pair.this.key_name
 }
 
+output "private_instance_id" {
+  description = "Identifiant de l instance privee."
+  value       = aws_instance.private.id
+}
+
+output "private_instance_ip" {
+  description = "Adresse IPv4 privee de l instance applicative."
+  value       = aws_instance.private.private_ip
+}
+
+output "private_instance_dns" {
+  description = "Nom DNS prive de l instance applicative."
+  value       = aws_instance.private.private_dns
+}
