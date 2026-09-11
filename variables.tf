@@ -17,3 +17,23 @@ variable "ssh_source_cidr" {
     error_message = "Indiquer une IPv4 valide suivie de /32 pour autoriser un seul poste."
   }
 }
+
+variable "ami_id" {
+  description = "AMI Amazon Linux 2023 x86_64 en eu-west-3, fixee pour la duree du TP."
+  type        = string
+
+  validation {
+    condition     = can(regex("^ami-([0-9a-f]{8}|[0-9a-f]{17})$", var.ami_id))
+    error_message = "Indiquer un identifiant AMI valide."
+  }
+}
+
+variable "ssh_public_key_path" {
+  description = "Chemin local vers le fichier .pub ED25519 sur la machine Terraform."
+  type        = string
+
+  validation {
+    condition     = fileexists(pathexpand(var.ssh_public_key_path))
+    error_message = "Le fichier de cle publique doit exister sur la machine Terraform."
+  }
+}
