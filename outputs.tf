@@ -87,3 +87,18 @@ output "key_pair_name" {
   description = "key pair name."
   value       = module.ec2.key_pair_name
 }
+
+output "private_instance_id" {
+  description = "Identifiant de l instance privee."
+  value       = module.ec2.private_instance_id
+}
+
+output "private_instance_ip" {
+  description = "Adresse IPv4 privee de l instance applicative."
+  value       = module.ec2.private_instance_ip
+}
+
+output "private_instance_dns" {
+  description = "Nom DNS prive de l instance applicative."
+  value       = module.ec2.private_instance_dns
+}

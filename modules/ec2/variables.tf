@@ -32,3 +32,13 @@ variable "ssh_public_key" {
     error_message = "Fournir une cle publique OpenSSH ED25519."
   }
 }
+
+variable "private_subnet_id" {
+  description = "Sous-reseau prive de l instance applicative."
+  type        = string
+}
+
+variable "private_security_group_id" {
+  description = "Groupe de securite de l instance privee."
+  type        = string
+}

@@ -19,8 +19,10 @@ module "ec2" {
   ami_id                    = var.ami_id
   public_subnet_id          = module.vpc.public_subnet_id
   bastion_security_group_id = module.security.bastion_security_group_id
+  private_subnet_id         = module.vpc.private_subnet_id
+  private_security_group_id = module.security.private_security_group_id
   ssh_public_key            = trimspace(file(pathexpand(var.ssh_public_key_path)))
 
-  # Attendre aussi les regles SSH et le routage avant de lancer le bastion.
+  # Attendre aussi les regles SSH et le routage avant de lancer les instances.
   depends_on = [module.vpc, module.security]
 }
