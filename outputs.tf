@@ -52,3 +52,13 @@ output "private_route_table_id" {
   description = "Table de routage associee au sous-reseau prive."
   value       = module.vpc.private_route_table_id
 }
+
+output "bastion_security_group_id" {
+  description = "Groupe de securite a associer au bastion."
+  value       = module.security.bastion_security_group_id
+}
+
+output "private_security_group_id" {
+  description = "Groupe de securite a associer a l instance privee."
+  value       = module.security.private_security_group_id
+}

@@ -1,11 +1,11 @@
-variable "numero_poste" {
-  description = "Numéro de poste sur deux chiffres, conservé comme chaîne (exemple : 07)."
+variable "name_prefix" {
+  description = "Prefixe commun aux noms des ressources, par exemple tp-06."
   type        = string
+}
 
-  validation {
-    condition     = can(regex("^[0-9]{2}$", var.numero_poste))
-    error_message = "Le numéro de poste doit contenir exactement deux chiffres."
-  }
+variable "vpc_id" {
+  description = "Identifiant du VPC recevant les groupes de securite."
+  type        = string
 }
 
 variable "ssh_source_cidr" {

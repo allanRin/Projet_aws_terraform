@@ -1,2 +1,5 @@
 # Copier vers terraform.tfvars, puis remplacer NN par votre numéro (exemple : 07).
 numero_poste = "NN"
+
+# Remplacer par l IPv4 publique du poste qui ouvrira SSH, suivie de /32.
+ssh_source_cidr = "VOTRE_IP_PUBLIQUE/32"
